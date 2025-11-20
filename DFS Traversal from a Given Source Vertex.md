@@ -1,71 +1,96 @@
-# Ex. No: 17A - Generate a Graph for a Given Fixed Degree Sequence
+# Ex. No: 17C - DFS Traversal from a Given Source Vertex
 
 ## AIM:
-To write a Python program to generate a graph for a given **fixed degree sequence**.
+To write a Python program to **print DFS traversal** from a given source vertex.
 
 ## ALGORITHM:
 
 **Step 1**: Start the program.
 
-**Step 2**: Check if the sum of the degree sequence is even.  
-> (A necessary condition for the sequence to be graphical.)
+**Step 2**: Create a graph using **adjacency list representation**.
 
-- If not even, print an error message and exit the program.
+**Step 3**: Add edges between vertices using the `addEdge()` method.
 
-**Step 3**: Use the **Havel-Hakimi algorithm** to determine whether a simple graph can be constructed from the sequence, and to generate the graph.
+**Step 4**: Implement the `DFSUtil()` function to **recursively visit** and print each unvisited vertex:
+- Mark the current vertex as **visited**.
+- Recursively call `DFSUtil` for each **unvisited adjacent vertex**.
 
-**Step 4**: If the graph is successfully created, **visualize it** using a graph drawing function (e.g., `networkx.draw()`).
+**Step 5**: In the `DFS()` function:
+- Initialize an empty set for visited vertices.
+- Call `DFSUtil()` starting from the given vertex.
 
-**Step 5**: End the program.
+**Step 6**: Input the **starting vertex** and perform DFS traversal.
+
+**Step 7**: Print the vertices in **DFS order**.
+
+**Step 8**: End the program.
 
 ## PYTHON PROGRAM
 
 ```
-Name : Bavankalyan P V
-Reg No : 212223060030
-Python3 program to generate a graph
-# for a given fixed degrees
+# Python3 program to print DFS traversal
+# from a given graph
+from collections import defaultdict
 
-# A function to print the adjacency matrix.
-def printMat(degseq, n):
-	
-	# n is number of vertices
-	mat=[[0]*n for i in range (n)]
-	for i in range (n):
-	    for j in range(i+1,n):
-	        if(degseq[i]>0 and degseq[j]>0):
-	            degseq[i]-=1
-	            degseq[j]-=1
-	            mat[i][j]=1
-	            mat[j][i]=1
+# This class represents a directed graph using
+# adjacency list representation
 
-	
-	# Print the result in specified form
-	print("      ", end ="")
-	for i in range(n):
-		print(" ", "(", i, ")", end ="")
-	print()
-	print()
-	for i in range(n):
-		print("  ", "(", i, ")", end = " ")
-		for j in range(n):
-			print("  ", mat[i][j], end = " ")
-		print()
 
-# Driver Code
-degseq=[]
-for i in range(0, 5):
-    ele = int(input())
-  
-    degseq.append(ele)
-#degseq =[v0,v1,v2,v3,v4]
+class Graph:
 
-n = len(degseq)
-printMat(degseq, n)
+	# Constructor
+	def __init__(self):
+
+		# default dictionary to store graph
+		self.graph = defaultdict(list)
+
+	# function to add an edge to graph
+	def addEdge(self, u, v):
+		self.graph[u].append(v)
+
+	# A function used by DFS
+	def DFSUtil(self, v, visited):
+
+		# Mark the current node as visited
+		# and print it
+		visited.add(v)
+		print(v,end=" ")
+		for neighbour in self.graph[v]:
+		    if neighbour not in visited:
+		        self.DFSUtil(neighbour,visited)
+		
+		
+	# The function to do DFS traversal. It uses
+	# recursive DFSUtil()
+	def DFS(self, v):
+
+		# Create a set to store visited vertices
+		visited = set()
+
+		# Call the recursive helper function
+		# to print DFS traversal
+		self.DFSUtil(v, visited)
+
+# Driver code
+
+
+# Create a graph given
+# in the above diagram
+n=int(input())
+g = Graph()
+g.addEdge(0, 1)
+g.addEdge(0, 2)
+g.addEdge(1, 2)
+g.addEdge(2, 0)
+g.addEdge(2, 3)
+g.addEdge(3, 3)
+
+print("Following is DFS from (starting from vertex {})".format(n))
+g.DFS(n)
 ```
 
 ## OUTPUT
-<img width="1007" height="297" alt="image" src="https://github.com/user-attachments/assets/c5e10fc6-9740-40bf-ba38-d4f0ab94c86a" />
+<img width="1050" height="242" alt="image" src="https://github.com/user-attachments/assets/ae4babe9-ad96-4c4f-9705-543c602bc75d" />
 
 ## RESULT
-Thus,write a Python program to generate a graph for a given **fixed degree sequence** is succesfully executed.
+Thus, a Python program to **print DFS traversal** from a given source vertex is executed successfully.
